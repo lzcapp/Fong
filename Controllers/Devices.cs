@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fong.Controllers {
     [ApiController]
     [Route("api/[controller]")]
-    public class DevicesController : ControllerBase {
+    public class Devices : ControllerBase {
         private readonly FingService _fingService;
 
-        public DevicesController(FingService fingService) {
+        public Devices(FingService fingService) {
             _fingService = fingService;
         }
 
