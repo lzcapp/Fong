@@ -42,7 +42,7 @@ namespace Fong.Services {
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error fetching Fing API data");
-                return [];
+                throw;
             }
         }
 
@@ -62,7 +62,7 @@ namespace Fong.Services {
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error fetching Fing API data");
-                return [];
+                throw;
             }
         }
     
@@ -79,7 +79,7 @@ namespace Fong.Services {
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error fetching Fing API data");
-                return null;
+                throw;
             }
         }
     }

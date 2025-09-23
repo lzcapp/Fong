@@ -10,7 +10,7 @@ namespace Fong.Models {
     public class Device {
         [JsonPropertyName("mac")] public string Mac { get; set; } = string.Empty;
 
-        [JsonPropertyName("ip")] public List<string> Ip { get; set; } = new List<string>();
+        [JsonPropertyName("ip")] public List<string> Ip { get; set; } = [];
 
         [JsonPropertyName("state")] public string State { get; set; } = string.Empty;
 
