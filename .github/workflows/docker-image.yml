@@ -36,7 +36,7 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
-          username: ${{ $DOCKERHUB_USERNAME }}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -53,6 +53,6 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           tags: |
-            ${{ $DOCKERHUB_USERNAME }}/fong:latest
+            ${{ vars.DOCKERHUB_USERNAME }}/fong:latest
             ghcr.io/${{ github.actor }}/fong:latest
             ${{ steps.meta.outputs.tags }}
