@@ -15,6 +15,10 @@ namespace Fong.Services {
             _fingApiHost = config["FING_API_HOST"] ?? settings.Value.ApiHost;
             _fingApiPort = config["FING_API_PORT"] ?? settings.Value.ApiPort;
             _fingApiKey = config["FING_API_KEY"] ?? settings.Value.ApiKey;
+
+            if (string.IsNullOrWhiteSpace(_fingApiHost) || string.IsNullOrWhiteSpace(_fingApiPort) || string.IsNullOrWhiteSpace(_fingApiKey)) {
+                throw new ArgumentException();
+            }
         }
 
         private string BuildFingApiUrl(string endpoint) {
