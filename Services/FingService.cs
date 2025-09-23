@@ -22,7 +22,7 @@ namespace Fong.Services {
         }
 
         private string BuildFingApiUrl(string endpoint) {
-            var baseUrl = !endpoint.Equals("agent", StringComparison.InvariantCultureIgnoreCase) ? $"{_fingApiHost}:{_fingApiPort}/1/{endpoint}?auth={_fingApiKey}" : $"{_fingApiHost}:{_fingAgentPort}/";
+            var baseUrl = endpoint.Equals("agent", StringComparison.InvariantCultureIgnoreCase) ? $"{_fingApiHost}:{_fingAgentPort}/" : $"{_fingApiHost}:{_fingApiPort}/1/{endpoint}?auth={_fingApiKey}";
             return baseUrl;
         }
 
@@ -72,12 +72,9 @@ namespace Fong.Services {
                 var response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 
-                var json = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions {
-                    PropertyNameCaseInsensitive = true
-                };
+                var xml = await response.Content.ReadAsStringAsync();
 
-                var agentInfo = JsonSerializer.Deserialize<AgentInfo>(json, options);
+                var agentInfo = new AgentInfo(xml);
                 return agentInfo;
             }
             catch (Exception ex) {
