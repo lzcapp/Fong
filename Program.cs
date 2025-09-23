@@ -1,24 +1,24 @@
+using Fong.Configs;
+using Fong.Services;
 
-namespace Fong
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+namespace Fong {
+    public class Program {
+        public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddHttpClient<FingService>();
+            
+            builder.Services.Configure<FingApiSettings>(builder.Configuration.GetSection("FingApiSettings"));
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            if (app.Environment.IsDevelopment()) {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
@@ -26,7 +26,6 @@ namespace Fong
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using Fong.Configs;
+using System.Text.Json;
 using Fong.Models;
+using Microsoft.Extensions.Options;
 
 namespace Fong.Services {
     public class FingService {
@@ -7,21 +9,16 @@ namespace Fong.Services {
         private readonly ILogger<FingService> _logger;
         private readonly string _fingApiHost, _fingApiPort, _fingApiKey, _fingAgentPort = "44444";
 
-        public FingService(HttpClient httpClient, IConfiguration config, ILogger<FingService> logger) {
+        public FingService(HttpClient httpClient, IConfiguration config, IOptions<FingApiSettings> settings, ILogger<FingService> logger) {
             _httpClient = httpClient;
             _logger = logger;
-            _fingApiHost = config["FING_API_HOST"] ?? throw new ArgumentNullException("FING_API_HOST is missing!");
-            _fingApiPort = config["FING_API_PORT"] ?? throw new ArgumentNullException("FING_API_PORT is missing!");
-            _fingApiKey = config["FING_API_KEY"] ?? throw new ArgumentNullException("FING_API_KEY is missing!");
+            _fingApiHost = config["FING_API_HOST"] ?? settings.Value.ApiHost;
+            _fingApiPort = config["FING_API_PORT"] ?? settings.Value.ApiPort;
+            _fingApiKey = config["FING_API_KEY"] ?? settings.Value.ApiKey;
         }
 
         private string BuildFingApiUrl(string endpoint) {
-            string baseUrl;
-            if (!endpoint.Equals("agent", StringComparison.InvariantCultureIgnoreCase)) {
-                baseUrl = $"{_fingApiHost}:{_fingApiPort}/1/{endpoint}?auth={_fingApiKey}";
-            } else {
-                baseUrl = $"{_fingApiHost}:{_fingAgentPort}/";
-            }
+            var baseUrl = !endpoint.Equals("agent", StringComparison.InvariantCultureIgnoreCase) ? $"{_fingApiHost}:{_fingApiPort}/1/{endpoint}?auth={_fingApiKey}" : $"{_fingApiHost}:{_fingAgentPort}/";
             return baseUrl;
         }
 
