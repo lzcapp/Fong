@@ -50,5 +50,17 @@ namespace Fong.Models {
                 }
             }
         }
+        
+        // Constructor for database mapping
+        public AgentInfo(string? ip, string? modelName, string? state, string? agentId, 
+                        string? friendlyName, string? deviceType, string? manufacturer) {
+            Ip = ip ?? string.Empty;
+            ModelName = modelName ?? string.Empty;
+            State = state ?? string.Empty;
+            AgentId = agentId ?? string.Empty;
+            FriendlyName = friendlyName ?? string.Empty;
+            DeviceType = deviceType ?? string.Empty;
+            Manufacturer = manufacturer ?? string.Empty;
+        }
     }
 }

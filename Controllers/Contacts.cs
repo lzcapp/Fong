@@ -6,17 +6,17 @@ namespace Fong.Controllers {
     [ApiController]
     [Route("api/[controller]")]
     public class Contacts : ControllerBase {
-        private readonly FingService _fingService;
+        private readonly DataStorageService _dataStorageService;
 
-        public Contacts(FingService fingService) {
-            _fingService = fingService;
+        public Contacts(DataStorageService dataStorageService) {
+            _dataStorageService = dataStorageService;
         }
 
         // GET api/contacts
         [HttpGet]
-        public async Task<ActionResult<List<Contacts>>> GetAllContacts() {
-            var devices = await _fingService.GetContactsAsync();
-            return Ok(devices);
+        public async Task<ActionResult<List<Contact>>> GetAllContacts([FromQuery] bool useCache = true, [FromQuery] bool refresh = false) {
+            var contacts = await _dataStorageService.GetContactsAsync(useCache, refresh);
+            return Ok(contacts);
         }
     }
 }
