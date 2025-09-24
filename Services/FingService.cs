@@ -1,5 +1,6 @@
 ﻿using Fong.Configs;
 using System.Text.Json;
+using Fong.Helpers;
 using Fong.Models;
 using Microsoft.Extensions.Options;
 
@@ -12,13 +13,21 @@ namespace Fong.Services {
         public FingService(HttpClient httpClient, IConfiguration config, IOptions<FingApiSettings> settings, ILogger<FingService> logger) {
             _httpClient = httpClient;
             _logger = logger;
-            _fingApiHost = config["FING_API_HOST"] ?? settings.Value.ApiHost;
-            _fingApiPort = config["FING_API_PORT"] ?? settings.Value.ApiPort;
-            _fingApiKey = config["FING_API_KEY"] ?? settings.Value.ApiKey;
+            if (AppHelper.IsInDocker) {
+                _fingApiHost = config["FING_API_HOST"] ?? string.Empty;
+                _fingApiPort = config["FING_API_PORT"] ?? string.Empty;
+                _fingApiKey = config["FING_API_KEY"] ?? string.Empty;
+            } else {
+                _fingApiHost = settings.Value.ApiHost;
+                _fingApiPort = settings.Value.ApiPort;
+                _fingApiKey = settings.Value.ApiKey;
+            }
 
             if (string.IsNullOrWhiteSpace(_fingApiHost) || string.IsNullOrWhiteSpace(_fingApiPort) || string.IsNullOrWhiteSpace(_fingApiKey)) {
                 throw new ArgumentException();
             }
+
+            var dataPath = AppHelper.GetDataPath();
         }
 
         private string BuildFingApiUrl(string endpoint) {
