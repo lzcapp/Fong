@@ -1,6 +1,7 @@
 ﻿using Fong.Models;
 using Fong.Services;
 using Microsoft.AspNetCore.Mvc;
+using Device = Fong.Models.Database.Device;
 
 namespace Fong.Controllers {
     [ApiController]

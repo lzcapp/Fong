@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
-namespace Fong.Models {
+namespace Fong.Models.Fing {
     public class AgentInfo {
         public string Ip { get; private set; }
         public string ModelName { get; private set; }

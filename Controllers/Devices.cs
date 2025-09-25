@@ -1,29 +1,31 @@
-﻿using Fong.Models;
+﻿using Fong.Contexts;
+using Fong.Models;
 using Fong.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Device = Fong.Models.Database.Device;
 
 namespace Fong.Controllers {
     [ApiController]
     [Route("api/[controller]")]
     public class Devices : ControllerBase {
-        private readonly FingService _fingService;
+        private readonly AppDbContext _context;
 
-        public Devices(FingService fingService) {
-            _fingService = fingService;
+        public Devices(AppDbContext context) {
+            _context = context;
         }
 
         // GET api/devices
         [HttpGet]
         public async Task<ActionResult<List<Device>>> GetAllDevices() {
-            var devices = await _fingService.GetDevicesAsync();
-            return Ok(devices);
+            return await _context.Devices.ToListAsync();
         }
 
         // GET api/devices/online
         [HttpGet("online")]
         public async Task<ActionResult<List<Device>>> GetOnlineDevices() {
-            var devices = await _fingService.GetDevicesAsync();
-            var onlineDevices = devices.Where(d => d.State.Equals("UP", StringComparison.OrdinalIgnoreCase)).ToList();
+            var devices = await _context.Devices.ToListAsync();
+            var onlineDevices = devices.Where(d => d.State == 1).ToList();
             return Ok(onlineDevices);
         }
     }

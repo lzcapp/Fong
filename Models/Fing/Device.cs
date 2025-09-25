@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Fong.Models {
+namespace Fong.Models.Fing {
     public class DeviceResponse {
         [JsonPropertyName("networkId")] public string? NetworkId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Fong.Models {
+namespace Fong.Models.Fing {
     public class ContactResponse {
         [JsonPropertyName("contacts")] public List<Contact> Contacts { get; set; } = [];
     }
