@@ -52,7 +52,8 @@ namespace Fong.Services {
                 var devices = deviceResponse?.Devices ?? [];
                 if (devices is { Count: > 0 }) {
                     foreach (var device in devices) {
-                        var existing = await _context.Devices.FirstOrDefaultAsync(d => d.Mac == device.Mac);
+                        var mac = device.Mac;
+                        var existing = await _context.Devices.FirstOrDefaultAsync(d => d.Mac == mac);
 
                         var state = device.Active ? 1 : 0;
                         var ip = string.Join(",", device.Ip);
@@ -80,7 +81,8 @@ namespace Fong.Services {
                             existing.LastChanged = lastChanged ?? existing.LastChanged;
                         } else {
                             var dbDevice = new Fong.Models.Database.Device {
-                                Mac = device.Mac,
+                                Id = AppHelper.GenerateHash(mac),
+                                Mac = mac,
                                 Ip = ip,
                                 State = state,
                                 Name = device.Name ?? string.Empty,

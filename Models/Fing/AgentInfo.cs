@@ -2,13 +2,13 @@
 
 namespace Fong.Models.Fing {
     public class AgentInfo {
-        public string Ip { get; private set; }
-        public string ModelName { get; private set; }
-        public string State { get; private set; }
-        public string AgentId { get; private set; }
-        public string FriendlyName { get; private set; }
-        public string DeviceType { get; private set; }
-        public string Manufacturer { get; private set; }
+        public string Ip { get; private set; } = string.Empty;
+        public string ModelName { get; private set; } = string.Empty;
+        public string State { get; private set; } = string.Empty;
+        public string AgentId { get; private set; } = string.Empty;
+        public string FriendlyName { get; private set; } = string.Empty;
+        public string DeviceType { get; private set; } = string.Empty;
+        public string Manufacturer { get; private set; } = string.Empty;
 
         public AgentInfo(string response) {
             const string ns = "urn:schemas-upnp-org:device-1-0";
