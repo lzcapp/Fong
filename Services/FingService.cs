@@ -55,6 +55,7 @@ namespace Fong.Services {
                         var mac = device.Mac;
                         var existing = await _context.Devices.FirstOrDefaultAsync(d => d.Mac == mac);
 
+                        var name = device.Name ?? string.Empty;
                         var state = device.Active ? 1 : 0;
                         var ip = string.Join(",", device.Ip);
                         var type = device.Type ?? string.Empty;
@@ -85,7 +86,7 @@ namespace Fong.Services {
                                 Mac = mac,
                                 Ip = ip,
                                 State = state,
-                                Name = device.Name ?? string.Empty,
+                                Name = name,
                                 Type = type,
                                 Vendor = vendor,
                                 Model = model,
