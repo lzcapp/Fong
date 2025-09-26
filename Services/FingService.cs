@@ -2,11 +2,9 @@
 using Fong.Contexts;
 using System.Text.Json;
 using Fong.Helpers;
-using Fong.Models;
 using Fong.Models.Fing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Device = Fong.Models.Fing.Device;
 
 namespace Fong.Services {
     public class FingService {
@@ -60,6 +58,10 @@ namespace Fong.Services {
 
                         var state = device.Active ? 1 : 0;
                         var ip = string.Join(",", device.Ip);
+                        var type = device.Type ?? string.Empty;
+                        var vendor = device.Make ?? string.Empty;
+                        var model = device.Model ?? string.Empty;
+                        var contactId = device.ContactId ?? string.Empty;
                         long? firstSeen = null;
                         if (DateTime.TryParse(device.FirstSeen, out var dateFirstSeen)) {
                             firstSeen = new DateTimeOffset(dateFirstSeen.ToUniversalTime()).ToUnixTimeMilliseconds();
@@ -72,10 +74,10 @@ namespace Fong.Services {
                         if (existing != null) {
                             existing.Ip = ip;
                             existing.State = state;
-                            existing.Type = existing.Type ?? string.Empty;
-                            existing.Vendor = existing.Vendor ?? string.Empty;
-                            existing.Model = existing.Model ?? string.Empty;
-                            existing.ContactId = existing.ContactId ?? string.Empty;
+                            existing.Type = type;
+                            existing.Vendor = vendor;
+                            existing.Model = model;
+                            existing.ContactId = contactId;
                             existing.FirstSeen = firstSeen ?? existing.FirstSeen;
                             existing.LastChanged = lastChanged ?? existing.LastChanged;
                         } else {
@@ -84,10 +86,10 @@ namespace Fong.Services {
                                 Ip = ip,
                                 State = state,
                                 Name = device.Name ?? string.Empty,
-                                Type = device.Type ?? string.Empty,
-                                Vendor = device.Make ?? string.Empty,
-                                Model = device.Model ?? string.Empty,
-                                ContactId = device.ContactId ?? string.Empty,
+                                Type = type,
+                                Vendor = vendor,
+                                Model = model,
+                                ContactId = contactId,
                                 FirstSeen = firstSeen,
                                 LastChanged = lastChanged
                             };
