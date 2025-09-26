@@ -30,8 +30,6 @@ namespace Fong.Services {
             if (string.IsNullOrWhiteSpace(_fingApiHost) || string.IsNullOrWhiteSpace(_fingApiPort) || string.IsNullOrWhiteSpace(_fingApiKey)) {
                 throw new ArgumentException();
             }
-
-            var dataPath = AppHelper.GetDataPath();
         }
 
         private string BuildFingApiUrl(string endpoint) {
