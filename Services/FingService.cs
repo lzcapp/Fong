@@ -62,11 +62,11 @@ namespace Fong.Services {
                         var ip = string.Join(",", device.Ip);
                         long? firstSeen = null;
                         if (DateTime.TryParse(device.FirstSeen, out var dateFirstSeen)) {
-                            firstSeen = new DateTimeOffset(dateFirstSeen.ToUniversalTime()).ToUnixTimeSeconds();
+                            firstSeen = new DateTimeOffset(dateFirstSeen.ToUniversalTime()).ToUnixTimeMilliseconds();
                         }
                         long? lastChanged = null;
                         if (DateTime.TryParse(device.LastChanged, out var dateLastChanged)) {
-                            lastChanged = new DateTimeOffset(dateLastChanged.ToUniversalTime()).ToUnixTimeSeconds();
+                            lastChanged = new DateTimeOffset(dateLastChanged.ToUniversalTime()).ToUnixTimeMilliseconds();
                         }
                         
                         if (existing != null) {
@@ -101,7 +101,6 @@ namespace Fong.Services {
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error fetching Fing API data");
-                throw;
             }
         }
 
