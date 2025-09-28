@@ -1,6 +1,7 @@
 ﻿using Fong.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using Device = Fong.Models.Database.Device;
 
 namespace Fong.Controllers {
@@ -24,8 +25,11 @@ namespace Fong.Controllers {
         private static long Ip2Uint(string? dIp) {
             try {
                 var ip = dIp.Split(",")[0];
-                var octets = ip.Split(".");
-                return (int.Parse(octets[0]) * 1000 * 1000 * 1000) + (int.Parse(octets[1]) * 1000 * 1000) + (int.Parse(octets[2]) * 1000) + int.Parse(octets[3]);
+                var bytes = IPAddress.Parse(ip).GetAddressBytes();
+                if (BitConverter.IsLittleEndian) {
+                    Array.Reverse(bytes);
+                }
+                return BitConverter.ToUInt32(bytes, 0);
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 return long.MaxValue;
