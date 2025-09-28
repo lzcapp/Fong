@@ -15,14 +15,20 @@ namespace Fong.Controllers {
 
         // GET api/devices
         [HttpGet]
-        public async Task<ActionResult<List<Device>>> GetAllDevices() {
-            return await _context.Devices
-                .OrderBy(d => d.State != 1 ? d.State == 0 ? 1 :
-                    d.State == -1 ? 2 : 3 :
-                    0)
-                .ThenBy(d => d.Ip)
-                .ThenBy(d => d.Mac)
-                .ToListAsync();
+        public Task<ActionResult<List<Device>>> GetAllDevices() {
+            return Task.FromResult<ActionResult<List<Device>>>(_context.Devices.AsEnumerable()
+                .OrderBy(d => d.State != 1 ? d.State == 0 ? 1 : d.State == -1 ? 2 : 3 : 0).ThenBy(d => ip2uint(d.Ip))
+                .ThenBy(d => d.Mac).ToList());
+        }
+
+        private long ip2uint(string? dIp) {
+            try {
+                var ip = dIp.Split(",")[0];
+                var octets = ip.Split(".");
+                return (int.Parse(octets[0]) * 1000 * 1000 * 1000) + (int.Parse(octets[1]) * 1000 * 1000) + (int.Parse(octets[2]) * 1000) + int.Parse(octets[3]);
+            } catch (Exception e) {
+                return long.MaxValue;
+            }
         }
 
         // GET api/devices/online
